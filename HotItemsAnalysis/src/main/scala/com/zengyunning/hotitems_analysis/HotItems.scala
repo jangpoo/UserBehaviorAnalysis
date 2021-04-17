@@ -101,7 +101,7 @@ object HotItems {
         aggStream.print("agg")
         resultStream.print()
 
-        env.execute("hot items")
+        env.execute("hotitems job")
 
     }
 
