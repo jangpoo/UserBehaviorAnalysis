@@ -48,7 +48,7 @@ object HotItems {
          */
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)   // 定义事件时间语义
 
-        // 从文件中读取数据，并转换成样例类；（由于是事件时间，因此需要指定当前时间戳和Watermark）提取时间戳生成Watermark
+        // 从文件中读取数据
 //        val inputPath: String = "datas/UserBehavior.csv"
 //        val inputPath: String = "src/main/resources/datas/UserBehavior.csv"
 //        val inputPath: String = "E:\\IDEAWorkspace\\UserBehaviorAnalysis\\HotItemsAnalysis\\src\\main\\resources\\datas\\UserBehavior.csv"
@@ -63,6 +63,7 @@ object HotItems {
 
         val inputStream: DataStream[String] = env.addSource(new FlinkKafkaConsumer[String]("hotitems", new SimpleStringSchema(), properties))
 
+        // 转换成样例类；（由于是事件时间，因此需要指定当前时间戳和Watermark）提取时间戳生成Watermark
         val dataStream: DataStream[UserBehavior] = inputStream
                 .map(
                     data => {
