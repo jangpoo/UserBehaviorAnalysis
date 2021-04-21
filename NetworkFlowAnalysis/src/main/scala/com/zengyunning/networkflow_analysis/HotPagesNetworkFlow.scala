@@ -162,7 +162,7 @@ class TopNHotPages(topSize: Int) extends KeyedProcessFunction[Long, PageViewCoun
         // 遍历结果列表中的每个ItemViewCount，输出到一行
         for(i <- sortedPageViewCouts.indices) {
 //            val currentPageViewCount: PageViewCount = sortedPageViewCouts(i)
-val currentPageViewCount: (String, Long) = sortedPageViewCouts(i)
+            val currentPageViewCount: (String, Long) = sortedPageViewCouts(i)
             result.append("NO").append(i + 1).append("：\t")
 //                    .append("页面URL = ").append(currentPageViewCount.url).append("\t")
                     .append("页面URL = ").append(currentPageViewCount._1).append("\t")
