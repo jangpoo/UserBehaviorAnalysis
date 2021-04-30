@@ -70,7 +70,8 @@ object TxMatch {
          *      1.Connect：“一国两制”——两条流的数据类型可以不同；
          *      2.Union：两条流的数据类型必须相同；
          */
-        val resultStream: DataStream[(OrderEvent, ReceiptEvent)] = orderEventStream.connect(receiptEventStream)
+        val resultStream: DataStream[(OrderEvent, ReceiptEvent)] = orderEventStream
+                .connect(receiptEventStream)
                 .process(new TxPayMatchResult())
 
         resultStream.print("matched")
