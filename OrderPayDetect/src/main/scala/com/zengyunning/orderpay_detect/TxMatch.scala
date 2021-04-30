@@ -38,7 +38,7 @@ object TxMatch {
         val orderInputStream: DataStream[String] = env.readTextFile(orderUrl.getPath)
 //        val inputStream: DataStream[String] = env.socketTextStream("hadoop202", 7777)
 
-        val orderEventStream: DataStream[OrderEvent] = orderInputStream
+        val orderEventStream: KeyedStream[OrderEvent, String] = orderInputStream
                 .map(
                     data => {
                         val arr: Array[String] = data.split(",")
@@ -54,14 +54,14 @@ object TxMatch {
         val receiptUrl: URL = getClass.getResource("/datas/ReceiptLog.csv")
         val receiptInputStream: DataStream[String] = env.readTextFile(receiptUrl.getPath)
 
-        val receiptEventStream: DataStream[ReceiptEvent] = receiptInputStream
+        val receiptEventStream: KeyedStream[ReceiptEvent, String] = receiptInputStream
                 .map(
                     data => {
                         val arr: Array[String] = data.split(",")
                         ReceiptEvent(arr(0), arr(1), arr(2).toLong)
                     }
                 )
-                .assignAscendingTimestamps(_.timestamp * 1000L)  // Watermark默认延迟1ms
+                .assignAscendingTimestamps(_.timestamp * 1000L) // Watermark默认延迟1ms
                 .keyBy(_.txId)
 
         // 3.合并两条流，进行处理
